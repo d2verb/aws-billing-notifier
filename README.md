@@ -14,3 +14,8 @@ export SLACK_WEBHOOK_URL=
 ```
 $ make deploy
 ```
+
+## References
+- https://qiita.com/sotoiwa/items/fa3070f5c84f4538e774
+- https://dev.classmethod.jp/articles/notify-slack-aws-billing/
+- https://amezou.com/categories/slack%e3%82%b3%e3%82%b9%e3%83%88%e9%80%9a%e7%9f%a5/
