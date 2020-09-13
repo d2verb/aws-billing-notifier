@@ -22,6 +22,9 @@ destroy:
 		--region ${AWS_REGION} \
 		--stack-name $(STACK_NAME)
 
+invoke: build
+	sam local invoke
+
 clean:
 	rm -f ./packaged.yaml
 	rm -rf ./.aws-sam

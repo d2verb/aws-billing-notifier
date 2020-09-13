@@ -2,11 +2,9 @@
 Sending billing info to your slack channel everyday.
 
 ## How to use
-0. install AWS SAM CLI
+0. install AWS SAM CLI (see: [here](https://docs.aws.amazon.com/ja_jp/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html))
 
-see: https://docs.aws.amazon.com/ja_jp/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html
-
-1. fill in all the contents in .envrc (you need https://github.com/direnv/direnv)
+1. fill in all the contents in .envrc (you need [direnv](https://github.com/direnv/direnv))
 ```
 export AWS_PROFILE=
 export AWS_REGION=
@@ -17,6 +15,12 @@ export SLACK_WEBHOOK_URL=
 2. deploy it
 ```
 $ make deploy
+```
+
+## Invoke function locally
+You can invoke lambda function in your local environment.
+```
+$ make invoke
 ```
 
 ## References
