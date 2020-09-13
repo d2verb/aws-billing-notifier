@@ -1,0 +1,4 @@
+export AWS_PROFILE=
+export AWS_REGION=
+export AWS_S3_BUCKET=
+export SLACK_WEBHOOK_URL=

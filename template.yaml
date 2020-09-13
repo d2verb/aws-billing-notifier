@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Sending aws billing info to slack
+
+Globals:
+  Function:
+    Timeout: 10
+
+Parameters:
+  SlackWebhookUrl:
+    Type: String
+    Default: hoge
+
+Resources:
+  BillingNotifierFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws_billing_notifier/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: !Ref SlackWebhookUrl
+      Events:
+        NotifySlack:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - CloudWatchReadOnlyAccess
+
+Outputs:
+  BillingNotifierFunction:
+    Description: "Billing Notifier Lambda Function ARN"
+    Value: !GetAtt BillingNotifierFunction.Arn
