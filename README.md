@@ -2,7 +2,7 @@
 Sending billing info to your slack channel everyday.
 
 ## How to use
-1. fill in all the contents in .envrc
+1. fill in all the contents in .envrc (you need https://github.com/direnv/direnv)
 ```
 export AWS_PROFILE=
 export AWS_REGION=
