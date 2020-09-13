@@ -1,8 +1,10 @@
 import date
+import boto3
 
-def get_billings(client):
+def get_billings():
+    client = boto3.client('ce', region_name='us-east-1')
+
     starttime, endtime = get_datetime_range()
-
     response = client.get_cost_and_usage(
         TimePeriod = {
             "Start": starttime.strftime("%Y-%m-%d"),
