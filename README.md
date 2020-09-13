@@ -2,6 +2,9 @@
 Sending billing info to your slack channel everyday.
 
 ## How to use
+0. install AWS SAM CLI
+see: https://docs.aws.amazon.com/ja_jp/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html
+
 1. fill in all the contents in .envrc (you need https://github.com/direnv/direnv)
 ```
 export AWS_PROFILE=
