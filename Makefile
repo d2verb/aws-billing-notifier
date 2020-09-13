@@ -3,12 +3,12 @@ STACK_NAME := BillingNotifier
 build:
 	sam build
 
-package: build
+package:
 	sam package \
 		--output-template-file packaged.yaml \
 		--s3-bucket ${AWS_S3_BUCKET}
 
-deploy: package
+deploy:
 	sam deploy \
 		--template-file packaged.yaml \
 		--stack-name $(STACK_NAME) \
