@@ -28,7 +28,7 @@ Resources:
             Schedule: cron(0 0 * * ? *)
       Policies:
         - AWSLambdaBasicExecutionRole
-        - CloudWatchReadOnlyAccess
+        - CostExplorerReadOnlyPolicy: {}
 
 Outputs:
   BillingNotifierFunction:

@@ -5,45 +5,31 @@ import os
 import boto3
 import requests
 import pytz
+from ce import get_billings
 
 SLACK_WEBHOOK_URL = os.environ["SLACK_WEBHOOK_URL"]
 
 def lambda_handler(event, context):
-    billing = get_billing()
-    notify(billing)
+    client = boto3.client('ce', region_name='us-east-1')
+    billings = get_billings(client)
+    notify(billings)
 
-def get_billing():
-    now = datetime.datetime.now()
+def build_message(billings):
+    total = billings["total"]
+    message_text = "Current total bill is *${:.2f}*".format(total)
 
-    cloudwatch = boto3.resource("cloudwatch", region_name="us-east-1")
-    metric = cloudwatch.Metric("AWS/Billing", "EstimatedCharges")
+    attachment_text = []
+    for name, billing in billings["services"].items():
+        line = f"{name:<40} : ${billing:.3f}"
+        attachment_text.append(line)
 
-    response = metric.get_statistics(
-        Dimensions = [
-            {
-                "Name": "Currency",
-                "Value": "USD"
-            },
-        ],
-        StartTime = now - datetime.timedelta(days=1),
-        EndTime = now,
-        Period = 3600 * 24, # 1 day
-        Statistics = ["Maximum"]
-    )
+    color = "good" if total < 50 else "danger"
 
-    datapoint = response["Datapoints"][0]
-    billing = {
-        "cost": datapoint["Maximum"],
-        "timestamp": now
+    atachements = {
+        "text": "```\n" + "\n".join(attachment_text) + "\n```",
+        "mrkdwn_in": ["text"],
+        "color": color
     }
-    return billing
-
-def build_message(billing):
-    attachment_text = "${}".format(billing["cost"])
-    atachements = {"text": attachment_text}
-
-    endtime = billing["timestamp"].astimezone(pytz.timezone("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M")
-    message_text = "Total cost as of {}".format(endtime)
 
     message = {
         "text": message_text,
@@ -52,7 +38,7 @@ def build_message(billing):
 
     return message
 
-def notify(billing):
-    message = build_message(billing)
+def notify(billings):
+    message = build_message(billings)
     response = requests.post(SLACK_WEBHOOK_URL, data=json.dumps(message))
     response.raise_for_status()
